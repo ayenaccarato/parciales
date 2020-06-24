@@ -1,0 +1,1 @@
+["Yellow", "Yellow", "White", "White", "Red", "Red", "Blue", "Blue", "Black", "Black"]

@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import json
+from os.path import isfile
 
 # jugadores = {'fede': {'nivel':3,'puntaje':4,'tiempo':200},
 #     'belen': {'nivel':4,'puntaje':6,'tiempo':300},
@@ -8,10 +9,13 @@ import json
 jugadores = {'ada':{'Nivel': 7, 'Puntaje': 7, 'Tiempo': 7}}
 
 nombre_archivo = 'jugadores.json'
-datos = []
+jug = {}
 
 def datos_jugadores(nombre_archivo):
-    return cargar_jugadores(nombre_archivo)
+    if isfile(nombre_archivo):
+        return cargar_jugadores(nombre_archivo)
+    else:
+        sg.Popup('Todavia no hay jugadores cargados', no_titlebar=True)
 
 def guardar_datos(nombre_archivo, jugadores):
     with open(nombre_archivo, 'w') as f:
@@ -37,10 +41,7 @@ def modificoDatos(nombre_archivo):
             guardar_datos(nombre_archivo,dic)
         else:
             sg.Popup('Error','El archivo '+nombre_archivo+' no existe')
-    #guardar_datos(nombre_archivo,dic)
 
-
-jug = datos_jugadores(nombre_archivo)
 
 colum = [[sg.Text('Crear jugador: ')],[sg.Text('Nombre: '), sg.Input(key='nombre')],[sg.Text('Nivel: '), sg.Input(key='nivel')],
 [sg.Text('Puntaje: '), sg.Input(key='puntaje')],[sg.Text('Tiempo: '),sg.Input(key='tiempo')]]
@@ -62,13 +63,13 @@ while True:
         break
     elif event is 'Añadir':
         modificoDatos(nombre_archivo)
-        window.Element('jugador').Update(datos[0])
+        jug = datos_jugadores(nombre_archivo)
+        window.Element('jugador').Update(list(jug.keys()))
     elif event == 'Mostrar':
         if values['jugador'] != []:
-            print(values['jugador'][0])
             lista.append((values['jugador'][0],jug[values['jugador'][0]]))
             actualizar_listado(window.FindElement('Datos'),lista)
         else:
-            print('nada')
+            sg.Popup('No seleccionaste ningun jugador', no_titlebar=True)
 
 window.Close()

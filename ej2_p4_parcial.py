@@ -12,10 +12,10 @@ nombre_archivo = 'jugadores.json'
 jug = {}
 
 def datos_jugadores(nombre_archivo):
-    if isfile(nombre_archivo):
-        return cargar_jugadores(nombre_archivo)
-    else:
-        sg.Popup('Todavia no hay jugadores cargados', no_titlebar=True)
+    #if isfile(nombre_archivo):
+    return cargar_jugadores(nombre_archivo)
+    # else:
+    #     sg.Popup('Todavia no hay jugadores cargados', no_titlebar=True)
 
 def guardar_datos(nombre_archivo, jugadores):
     with open(nombre_archivo, 'w') as f:
@@ -38,10 +38,12 @@ def modificoDatos(nombre_archivo):
         if Boton == 'Yes':
             dic = {}
             dic[values['nombre']]={'nivel': int(values['nivel']),'puntaje': int(values['puntaje']), 'tiempo': int(values['tiempo'])}
-            guardar_datos(nombre_archivo,dic)
         else:
-            sg.Popup('Error','El archivo '+nombre_archivo+' no existe')
+            sg.Popup('El archivo '+nombre_archivo+' no existe', no_titlebar=True)
+    guardar_datos(nombre_archivo,dic)
 
+if isfile(nombre_archivo):
+    jug = datos_jugadores(nombre_archivo)
 
 colum = [[sg.Text('Crear jugador: ')],[sg.Text('Nombre: '), sg.Input(key='nombre')],[sg.Text('Nivel: '), sg.Input(key='nivel')],
 [sg.Text('Puntaje: '), sg.Input(key='puntaje')],[sg.Text('Tiempo: '),sg.Input(key='tiempo')]]
